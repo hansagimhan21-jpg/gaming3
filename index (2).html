@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HANSA GAMING - Your Ultimate Gaming News Hub. Latest PC gaming news, reviews, hardware updates, and esports coverage.">
+    <meta name="keywords" content="gaming news, PC games, game reviews, esports, GPU, CPU, gaming hardware, new releases, game trailers">
+    <meta name="author" content="HANSA GAMING">
+    <meta property="og:title" content="HANSA GAMING - Ultimate Gaming News Hub">
+    <meta property="og:description" content="Discover latest gaming news, reviews, hardware updates and esports coverage.">
+    <meta property="og:type" content="website">
+    <title>HANSA GAMING | Ultimate Gaming News Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #1E1E1E;
+            --bg-glass: rgba(30, 30, 30, 0.6);
+            --primary-red: #FF3131;
+            --neon-blue: #00FFFF;
+            --text-white: #FFFFFF;
+            --text-gray: #B0B0B0;
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --shadow-red: rgba(255, 49, 49, 0.3);
+            --shadow-blue: rgba(0, 255, 255, 0.3);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Orbitron', sans-serif; }
+
+        .loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-primary); display: flex; justify-content: center; align-items: center;
+            z-index: 10000; transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .loading-screen.hidden { opacity: 0; visibility: hidden; }
+        .loading-logo {
+            font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900;
+            color: var(--primary-red); text-shadow: 0 0 20px var(--shadow-red);
+            animation: pulse 1.5s ease-in-out infinite; margin-bottom: 20px;
+        }
+        .loading-bar { width: 200px; height: 4px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; margin: 0 auto; }
+        .loading-progress { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-red), var(--neon-blue)); animation: loadingProgress 2s ease-in-out forwards; }
+        @keyframes loadingProgress { 0% { width: 0%; } 100% { width: 100%; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.05); } }
+
+        .news-ticker {
+            background: linear-gradient(90deg, var(--bg-secondary), var(--bg-primary));
+            border-bottom: 2px solid var(--primary-red); padding: 8px 0; overflow: hidden; position: relative; z-index: 1001;
+        }
+        .ticker-content { display: flex; animation: tickerScroll 30s linear infinite; white-space: nowrap; }
+        .ticker-item { display: inline-flex; align-items: center; padding: 0 30px; font-size: 0.85rem; color: var(--text-white); }
+        .ticker-item i { color: var(--neon-blue); margin-right: 8px; font-size: 0.7rem; }
+        .ticker-item .hot { color: var(--primary-red); font-weight: 600; margin-right: 5px; }
+        @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .navbar {
+            position: sticky; top: 0; background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-glass); z-index: 1000; padding: 0 5%; transition: all 0.3s ease;
+        }
+        .navbar.scrolled { background: rgba(10, 10, 10, 0.95); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 0; }
+        .logo {
+            font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text-white);
+            text-decoration: none; display: flex; align-items: center; gap: 10px; text-shadow: 0 0 10px var(--shadow-red);
+        }
+        .logo span { color: var(--primary-red); }
+        .logo i { color: var(--neon-blue); font-size: 1.5rem; }
+        .nav-links { display: flex; list-style: none; gap: 35px; align-items: center; }
+        .nav-links a {
+            color: var(--text-white); text-decoration: none; font-weight: 500; position: relative;
+            transition: color 0.3s ease; font-family: 'Orbitron', sans-serif; font-size: 0.85rem; letter-spacing: 1px;
+        }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-red), var(--neon-blue)); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--neon-blue); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        .search-btn, .theme-toggle {
+            background: none; border: 1px solid var(--border-glass); color: var(--text-white); width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1rem;
+        }
+        .search-btn:hover, .theme-toggle:hover { background: var(--primary-red); border-color: var(--primary-red); transform: scale(1.1); box-shadow: 0 0 15px var(--shadow-red); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--text-white); transition: all 0.3s ease; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .search-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px); z-index: 2000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .search-overlay.active { opacity: 1; visibility: visible; }
+        .search-container { width: 90%; max-width: 700px; }
+        .search-input-wrapper { position: relative; margin-bottom: 30px; }
+        .search-input {
+            width: 100%; padding: 20px 60px 20px 25px; background: var(--bg-glass); border: 2px solid var(--border-glass);
+            border-radius: 15px; color: var(--text-white); font-size: 1.2rem; font-family: 'Poppins', sans-serif; outline: none; transition: all 0.3s ease;
+        }
+        .search-input:focus { border-color: var(--neon-blue); box-shadow: 0 0 20px var(--shadow-blue); }
+        .search-close { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; transition: color 0.3s ease; }
+        .search-close:hover { color: var(--primary-red); }
+        .search-results { max-height: 400px; overflow-y: auto; }
+        .search-result-item {
+            padding: 15px 20px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 10px;
+            margin-bottom: 10px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 15px;
+        }
+        .search-result-item:hover { border-color: var(--neon-blue); transform: translateX(10px); background: rgba(0, 255, 255, 0.05); }
+        .search-result-item i { color: var(--neon-blue); font-size: 1.2rem; }
+        .search-result-item h4 { font-size: 1rem; margin-bottom: 3px; }
+        .search-result-item p { font-size: 0.85rem; color: var(--text-gray); }
+
+        .hero {
+            position: relative; height: 100vh; min-height: 700px; display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 49, 49, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+                linear-gradient(180deg, rgba(10, 10, 10, 0.7) 0%, rgba(10, 10, 10, 0.9) 100%),
+                url('https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1920&q=80') center/cover; z-index: 1;
+        }
+        .hero-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
+        .particle {
+            position: absolute; width: 4px; height: 4px; background: var(--neon-blue); border-radius: 50%;
+            animation: float 15s infinite; opacity: 0.6; box-shadow: 0 0 10px var(--neon-blue);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; } 90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        .hero-content { position: relative; z-index: 3; text-align: center; max-width: 900px; padding: 0 20px; }
+        .hero-logo { font-family: 'Orbitron', sans-serif; font-size: 4rem; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 30px var(--shadow-red); animation: fadeInDown 1s ease; }
+        .hero-logo span { color: var(--primary-red); }
+        .hero-subtitle { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--neon-blue); margin-bottom: 20px; letter-spacing: 5px; animation: fadeInUp 1s ease 0.3s both; }
+        .hero-description { font-size: 1.1rem; color: var(--text-gray); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; animation: fadeInUp 1s ease 0.5s both; }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; animation: fadeInUp 1s ease 0.7s both; }
+        .btn {
+            padding: 15px 40px; border-radius: 50px; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; font-weight: 600;
+            letter-spacing: 2px; text-decoration: none; cursor: pointer; transition: all 0.3s ease; border: none; display: inline-flex; align-items: center; gap: 10px;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-red), #ff6b6b); color: var(--text-white); box-shadow: 0 4px 20px var(--shadow-red); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px var(--shadow-red); }
+        .btn-secondary { background: transparent; color: var(--text-white); border: 2px solid var(--neon-blue); box-shadow: 0 0 15px var(--shadow-blue); }
+        .btn-secondary:hover { background: var(--neon-blue); color: var(--bg-primary); transform: translateY(-3px); box-shadow: 0 8px 30px var(--shadow-blue); }
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3; animation: bounce 2s infinite; }
+        .scroll-indicator i { font-size: 2rem; color: var(--neon-blue); }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); } 40% { transform: translateX(-50%) translateY(-15px); } 60% { transform: translateX(-50%) translateY(-8px); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section { padding: 100px 5%; position: relative; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-label { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--primary-red); letter-spacing: 5px; margin-bottom: 15px; display: block; }
+        .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; position: relative; display: inline-block; }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: linear-gradient(90deg, var(--primary-red), var(--neon-blue)); border-radius: 2px; }
+        .section-subtitle { color: var(--text-gray); font-size: 1rem; max-width: 600px; margin: 20px auto 0; }
+
+        .glass-card {
+            background: var(--bg-glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; transition: all 0.4s ease;
+        }
+        .glass-card:hover { transform: translateY(-10px); border-color: rgba(0, 255, 255, 0.3); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 255, 255, 0.1); }
+
+        .news-slider-section { background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%); }
+        .slider-container { max-width: 1400px; margin: 0 auto; position: relative; }
+        .slider-wrapper { overflow: hidden; border-radius: 20px; }
+        .slider-track { display: flex; transition: transform 0.5s ease; }
+        .slide { min-width: 100%; position: relative; height: 500px; }
+        .slide-image { width: 100%; height: 100%; object-fit: cover; }
+        .slide-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10, 10, 10, 0.95)); padding: 60px 40px 40px; }
+        .slide-tag { display: inline-block; padding: 5px 15px; background: var(--primary-red); color: var(--text-white); font-family: 'Orbitron', sans-serif; font-size: 0.75rem; border-radius: 20px; margin-bottom: 15px; }
+        .slide-title { font-size: 2rem; font-weight: 700; margin-bottom: 10px; max-width: 700px; }
+        .slide-desc { color: var(--text-gray); max-width: 600px; margin-bottom: 20px; }
+        .slider-controls { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .slider-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-glass); border: 1px solid var(--border-glass); color: var(--text-white); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-size: 1.2rem; }
+        .slider-btn:hover { background: var(--primary-red); border-color: var(--primary-red); transform: scale(1.1); }
+        .slider-dots { display: flex; gap: 10px; align-items: center; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--bg-secondary); border: 2px solid var(--border-glass); cursor: pointer; transition: all 0.3s ease; }
+        .dot.active { background: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 10px var(--shadow-blue); }
+
+        .trending-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .game-card { position: relative; border-radius: 20px; overflow: hidden; height: 400px; cursor: pointer; }
+        .game-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .game-card:hover img { transform: scale(1.1); }
+        .game-card-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10, 10, 10, 0.95)); padding: 30px 20px 20px; transform: translateY(20px); transition: transform 0.3s ease; }
+        .game-card:hover .game-card-overlay { transform: translateY(0); }
+        .game-card-tag { display: inline-block; padding: 4px 12px; background: var(--neon-blue); color: var(--bg-primary); font-size: 0.75rem; font-weight: 600; border-radius: 15px; margin-bottom: 10px; }
+        .game-card-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+        .game-card-meta { display: flex; gap: 15px; color: var(--text-gray); font-size: 0.85rem; }
+        .game-card-meta i { color: var(--primary-red); margin-right: 5px; }
+        .game-rating { position: absolute; top: 20px; right: 20px; width: 50px; height: 50px; background: rgba(255, 49, 49, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 15px var(--shadow-red); }
+
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .news-card { background: var(--bg-glass); backdrop-filter: blur(20px); border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; transition: all 0.4s ease; }
+        .news-card:hover { transform: translateY(-10px); border-color: rgba(0, 255, 255, 0.3); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); }
+        .news-card-image { width: 100%; height: 220px; object-fit: cover; transition: transform 0.5s ease; }
+        .news-card:hover .news-card-image { transform: scale(1.05); }
+        .news-card-content { padding: 25px; }
+        .news-card-tags { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .tag { padding: 4px 12px; background: rgba(255, 49, 49, 0.2); color: var(--primary-red); font-size: 0.75rem; font-weight: 600; border-radius: 15px; border: 1px solid rgba(255, 49, 49, 0.3); }
+        .tag.blue { background: rgba(0, 255, 255, 0.1); color: var(--neon-blue); border-color: rgba(0, 255, 255, 0.3); }
+        .news-card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
+        .news-card-desc { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6; }
+        .news-card-footer { display: flex; justify-content: space-between; align-items: center; }
+        .news-date { color: var(--text-gray); font-size: 0.85rem; }
+        .read-more { color: var(--neon-blue); text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; transition: gap 0.3s ease; }
+        .read-more:hover { gap: 10px; }
+
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; max-width: 1400px; margin: 0 auto; }
+        .game-item { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 15px; overflow: hidden; transition: all 0.4s ease; }
+        .game-item:hover { transform: translateY(-8px); border-color: var(--primary-red); box-shadow: 0 15px 35px rgba(255, 49, 49, 0.15); }
+        .game-item-cover { width: 100%; height: 350px; object-fit: cover; transition: transform 0.5s ease; }
+        .game-item:hover .game-item-cover { transform: scale(1.05); }
+        .game-item-info { padding: 20px; }
+        .game-item-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .game-item-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .game-genre { padding: 3px 10px; background: rgba(0, 255, 255, 0.1); color: var(--neon-blue); font-size: 0.75rem; border-radius: 10px; }
+        .game-date { color: var(--text-gray); font-size: 0.8rem; }
+        .game-rating-bar { display: flex; align-items: center; gap: 10px; }
+        .rating-stars { color: #FFD700; font-size: 0.85rem; }
+        .rating-score { font-family: 'Orbitron', sans-serif; font-weight: 700; color: var(--primary-red); }
+
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .review-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; transition: all 0.4s ease; }
+        .review-card:hover { transform: translateY(-8px); border-color: var(--neon-blue); }
+        .review-header { display: flex; gap: 20px; padding: 25px; border-bottom: 1px solid var(--border-glass); }
+        .review-image { width: 100px; height: 130px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+        .review-header-info { flex: 1; }
+        .review-game-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+        .review-score-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: linear-gradient(135deg, var(--primary-red), #ff6b6b); border-radius: 25px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.2rem; }
+        .review-body { padding: 25px; }
+        .review-pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .pros, .cons { padding: 15px; border-radius: 10px; }
+        .pros { background: rgba(0, 255, 0, 0.05); border: 1px solid rgba(0, 255, 0, 0.2); }
+        .cons { background: rgba(255, 0, 0, 0.05); border: 1px solid rgba(255, 0, 0, 0.2); }
+        .pros h4, .cons h4 { font-size: 0.9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .pros h4 { color: #00FF88; }
+        .cons h4 { color: var(--primary-red); }
+        .pros ul, .cons ul { list-style: none; font-size: 0.85rem; color: var(--text-gray); }
+        .pros li, .cons li { padding: 3px 0; display: flex; align-items: center; gap: 5px; }
+        .review-summary { font-size: 0.9rem; color: var(--text-gray); line-height: 1.7; padding-top: 15px; border-top: 1px solid var(--border-glass); }
+
+        .countdown-section { background: linear-gradient(135deg, rgba(255, 49, 49, 0.1), rgba(0, 255, 255, 0.1)); border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass); }
+        .countdown-container { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .countdown-game { font-size: 2rem; font-weight: 700; margin-bottom: 10px; color: var(--neon-blue); }
+        .countdown-release { color: var(--text-gray); margin-bottom: 40px; font-size: 1.1rem; }
+        .countdown-timer { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .countdown-item { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 15px; padding: 25px 35px; min-width: 120px; backdrop-filter: blur(10px); }
+        .countdown-value { font-family: 'Orbitron', sans-serif; font-size: 3rem; font-weight: 900; color: var(--primary-red); display: block; line-height: 1; text-shadow: 0 0 20px var(--shadow-red); }
+        .countdown-label { font-size: 0.85rem; color: var(--text-gray); margin-top: 10px; text-transform: uppercase; letter-spacing: 2px; }
+
+        .leaderboard { max-width: 800px; margin: 0 auto; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 20px; overflow: hidden; backdrop-filter: blur(20px); }
+        .leaderboard-header { padding: 25px 30px; background: linear-gradient(135deg, rgba(255, 49, 49, 0.2), rgba(0, 255, 255, 0.1)); border-bottom: 1px solid var(--border-glass); }
+        .leaderboard-header h3 { font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        .leaderboard-header h3 i { color: #FFD700; }
+        .leaderboard-item { display: flex; align-items: center; padding: 20px 30px; border-bottom: 1px solid var(--border-glass); transition: background 0.3s ease; }
+        .leaderboard-item:hover { background: rgba(255, 255, 255, 0.03); }
+        .leaderboard-rank { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 700; width: 50px; color: var(--text-gray); }
+        .leaderboard-rank.top { color: #FFD700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .leaderboard-game { flex: 1; display: flex; align-items: center; gap: 15px; }
+        .leaderboard-game img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+        .leaderboard-game-info h4 { font-size: 1rem; margin-bottom: 3px; }
+        .leaderboard-game-info span { font-size: 0.8rem; color: var(--text-gray); }
+        .leaderboard-players { font-family: 'Orbitron', sans-serif; color: var(--neon-blue); font-weight: 600; }
+
+        .hardware-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .hardware-card { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 20px; padding: 30px; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .hardware-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary-red), var(--neon-blue)); transform: scaleX(0); transition: transform 0.4s ease; }
+        .hardware-card:hover::before { transform: scaleX(1); }
+        .hardware-card:hover { transform: translateY(-8px); border-color: rgba(0, 255, 255, 0.3); }
+        .hardware-icon { width: 80px; height: 80px; background: linear-gradient(135deg, rgba(255, 49, 49, 0.2), rgba(0, 255, 255, 0.2)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 2rem; color: var(--neon-blue); }
+        .hardware-card h3 { font-size: 1.2rem; margin-bottom: 10px; }
+        .hardware-card p { color: var(--text-gray); font-size: 0.9rem; margin-bottom: 20px; }
+        .hardware-specs { display: flex; justify-content: center; gap: 20px; font-size: 0.85rem; }
+        .spec { display: flex; align-items: center; gap: 5px; color: var(--text-gray); }
+        .spec i { color: var(--primary-red); }
+
+        .contact-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+        .contact-info h3 { font-size: 1.8rem; margin-bottom: 20px; }
+        .contact-info p { color: var(--text-gray); margin-bottom: 30px; line-height: 1.8; }
+        .contact-details { display: flex; flex-direction: column; gap: 20px; }
+        .contact-item { display: flex; align-items: center; gap: 15px; }
+        .contact-item i { width: 50px; height: 50px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--neon-blue); font-size: 1.2rem; }
+        .contact-item div h4 { font-size: 1rem; margin-bottom: 3px; }
+        .contact-item div span { color: var(--text-gray); font-size: 0.9rem; }
+        .social-links { display: flex; gap: 15px; margin-top: 30px; }
+        .social-link { width: 50px; height: 50px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-white); text-decoration: none; font-size: 1.2rem; transition: all 0.3s ease; }
+        .social-link:hover { background: var(--primary-red); border-color: var(--primary-red); transform: translateY(-5px); box-shadow: 0 10px 25px var(--shadow-red); }
+        .contact-form { background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 20px; padding: 40px; backdrop-filter: blur(20px); }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 15px 20px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 12px; color: var(--text-white); font-family: 'Poppins', sans-serif; font-size: 1rem; outline: none; transition: all 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--shadow-blue); background: rgba(255, 255, 255, 0.08); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .submit-btn { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary-red), #ff6b6b); color: var(--text-white); border: none; border-radius: 12px; font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px var(--shadow-red); }
+
+        .newsletter-section { background: linear-gradient(135deg, rgba(255, 49, 49, 0.1), rgba(0, 255, 255, 0.1)); border-top: 1px solid var(--border-glass); }
+        .newsletter-container { max-width: 700px; margin: 0 auto; text-align: center; }
+        .newsletter-container h3 { font-size: 2rem; margin-bottom: 15px; }
+        .newsletter-container p { color: var(--text-gray); margin-bottom: 30px; }
+        .newsletter-form { display: flex; gap: 15px; max-width: 500px; margin: 0 auto; }
+        .newsletter-form input { flex: 1; padding: 15px 25px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 50px; color: var(--text-white); font-family: 'Poppins', sans-serif; font-size: 1rem; outline: none; transition: all 0.3s ease; }
+        .newsletter-form input:focus { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--shadow-blue); }
+        .newsletter-form button { padding: 15px 35px; background: linear-gradient(135deg, var(--primary-red), #ff6b6b); color: var(--text-white); border: none; border-radius: 50px; font-family: 'Orbitron', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; }
+        .newsletter-form button:hover { transform: scale(1.05); box-shadow: 0 5px 20px var(--shadow-red); }
+
+        .footer { background: var(--bg-secondary); border-top: 1px solid var(--border-glass); padding: 60px 5% 30px; }
+        .footer-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .footer-brand .logo { margin-bottom: 20px; font-size: 1.5rem; }
+        .footer-brand p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.8; margin-bottom: 20px; }
+        .footer-social { display: flex; gap: 12px; }
+        .footer-social a { width: 40px; height: 40px; background: var(--bg-glass); border: 1px solid var(--border-glass); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-white); text-decoration: none; transition: all 0.3s ease; }
+        .footer-social a:hover { background: var(--primary-red); border-color: var(--primary-red); transform: translateY(-3px); }
+        .footer-links h4 { font-size: 1.1rem; margin-bottom: 20px; color: var(--neon-blue); }
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 12px; }
+        .footer-links a { color: var(--text-gray); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; }
+        .footer-links a:hover { color: var(--primary-red); transform: translateX(5px); }
+        .footer-bottom { border-top: 1px solid var(--border-glass); padding-top: 30px; text-align: center; color: var(--text-gray); font-size: 0.9rem; }
+        .footer-bottom span { color: var(--primary-red); }
+
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary-red), var(--neon-blue)); border: none; border-radius: 50%; color: var(--text-white); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 999; box-shadow: 0 4px 20px rgba(255, 49, 49, 0.4); }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(255, 49, 49, 0.6); }
+
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .mobile-menu { position: fixed; top: 0; right: -100%; width: 80%; max-width: 400px; height: 100%; background: var(--bg-secondary); backdrop-filter: blur(20px); z-index: 1500; padding: 80px 30px 30px; transition: right 0.4s ease; border-left: 1px solid var(--border-glass); }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1400; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-nav-links { list-style: none; }
+        .mobile-nav-links li { margin-bottom: 25px; }
+        .mobile-nav-links a { color: var(--text-white); text-decoration: none; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; display: flex; align-items: center; gap: 15px; transition: color 0.3s ease; }
+        .mobile-nav-links a:hover { color: var(--neon-blue); }
+        .mobile-nav-links i { color: var(--primary-red); width: 30px; }
+
+        @media (max-width: 1024px) {
+            .footer-container { grid-template-columns: 1fr 1fr; }
+            .contact-container { grid-template-columns: 1fr; gap: 40px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .hero-logo { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1rem; letter-spacing: 3px; }
+            .section { padding: 60px 5%; }
+            .section-title { font-size: 1.8rem; }
+            .slide { height: 350px; }
+            .slide-title { font-size: 1.3rem; }
+            .news-grid { grid-template-columns: 1fr; }
+            .reviews-grid { grid-template-columns: 1fr; }
+            .countdown-timer { gap: 15px; }
+            .countdown-item { padding: 15px 20px; min-width: 80px; }
+            .countdown-value { font-size: 2rem; }
+            .newsletter-form { flex-direction: column; }
+            .footer-container { grid-template-columns: 1fr; text-align: center; }
+            .footer-social { justify-content: center; }
+            .review-header { flex-direction: column; text-align: center; }
+            .review-image { margin: 0 auto; }
+            .review-pros-cons { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 480px) {
+            .hero-buttons { flex-direction: column; width: 100%; }
+            .btn { width: 100%; justify-content: center; }
+            .countdown-timer { gap: 10px; }
+            .countdown-item { padding: 10px 15px; min-width: 70px; }
+            .countdown-value { font-size: 1.5rem; }
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-secondary); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-red); }
+        ::selection { background: var(--primary-red); color: var(--text-white); }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">HANSA <span>GAMING</span></div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Ticker -->
+    <div class="news-ticker">
+        <div class="ticker-content" id="tickerContent">
+            <div class="ticker-item"><i class="fas fa-fire"></i><span class="hot">HOT:</span> NVIDIA RTX 5090 specs leaked - 32GB GDDR7 memory confirmed</div>
+            <div class="ticker-item"><i class="fas fa-trophy"></i><span class="hot">ESPORTS:</span> Team Spirit wins CS2 Major Championship 2026</div>
+            <div class="ticker-item"><i class="fas fa-gamepad"></i><span class="hot">NEW:</span> GTA VI release date announced for October 2026</div>
+            <div class="ticker-item"><i class="fas fa-microchip"></i><span class="hot">HARDWARE:</span> Intel Core Ultra 9 285K benchmarks surface online</div>
+            <div class="ticker-item"><i class="fas fa-star"></i><span class="hot">REVIEW:</span> Elden Ring Nightreign gets 9.5/10 from critics</div>
+            <div class="ticker-item"><i class="fas fa-bolt"></i><span class="hot">UPDATE:</span> Cyberpunk 2077 Patch 2.2 adds ray tracing overhaul</div>
+            <div class="ticker-item"><i class="fas fa-fire"></i><span class="hot">HOT:</span> NVIDIA RTX 5090 specs leaked - 32GB GDDR7 memory confirmed</div>
+            <div class="ticker-item"><i class="fas fa-trophy"></i><span class="hot">ESPORTS:</span> Team Spirit wins CS2 Major Championship 2026</div>
+            <div class="ticker-item"><i class="fas fa-gamepad"></i><span class="hot">NEW:</span> GTA VI release date announced for October 2026</div>
+            <div class="ticker-item"><i class="fas fa-microchip"></i><span class="hot">HARDWARE:</span> Intel Core Ultra 9 285K benchmarks surface online</div>
+            <div class="ticker-item"><i class="fas fa-star"></i><span class="hot">REVIEW:</span> Elden Ring Nightreign gets 9.5/10 from critics</div>
+            <div class="ticker-item"><i class="fas fa-bolt"></i><span class="hot">UPDATE:</span> Cyberpunk 2077 Patch 2.2 adds ray tracing overhaul</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-dragon"></i>
+                HANSA <span>GAMING</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#news">News</a></li>
+                <li><a href="#games">Games</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="search-btn" id="searchBtn" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#news"><i class="fas fa-newspaper"></i> News</a></li>
+            <li><a href="#games"><i class="fas fa-gamepad"></i> Games</a></li>
+            <li><a href="#reviews"><i class="fas fa-star"></i> Reviews</a></li>
+            <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search games, news, reviews..." autocomplete="off">
+                <button class="search-close" id="searchClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <h1 class="hero-logo">HANSA <span>GAMING</span></h1>
+            <p class="hero-subtitle">YOUR ULTIMATE GAMING NEWS HUB</p>
+            <p class="hero-description">Stay ahead of the game with the latest news, reviews, and updates from the world of PC gaming. From AAA releases to indie gems, we have got you covered.</p>
+            <div class="hero-buttons">
+                <a href="#news" class="btn btn-primary">
+                    <i class="fas fa-newspaper"></i> Latest News
+                </a>
+                <a href="#games" class="btn btn-secondary">
+                    <i class="fas fa-gamepad"></i> Explore Games
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- News Slider Section -->
+    <section class="section news-slider-section" id="news-slider">
+        <div class="section-header">
+            <span class="section-label">BREAKING NEWS</span>
+            <h2 class="section-title">Featured Stories</h2>
+        </div>
+        <div class="slider-container">
+            <div class="slider-wrapper">
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=1200&q=80" alt="Gaming News" class="slide-image">
+                        <div class="slide-overlay">
+                            <span class="slide-tag">EXCLUSIVE</span>
+                            <h3 class="slide-title">GTA VI: Rockstar Reveals Massive Open World Details</h3>
+                            <p class="slide-desc">Leaked development documents reveal the largest map in GTA history, spanning multiple cities with unprecedented detail.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=1200&q=80" alt="Hardware News" class="slide-image">
+                        <div class="slide-overlay">
+                            <span class="slide-tag">HARDWARE</span>
+                            <h3 class="slide-title">NVIDIA RTX 5090: 32GB GDDR7 Benchmarks Leaked</h3>
+                            <p class="slide-desc">Early performance tests show 70% improvement over RTX 4090 in ray tracing workloads. Launch expected Q4 2026.</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80" alt="Esports" class="slide-image">
+                        <div class="slide-overlay">
+                            <span class="slide-tag">ESPORTS</span>
+                            <h3 class="slide-title">CS2 Major 2026: Team Spirit Dominates Finals</h3>
+                            <p class="slide-desc">The Russian powerhouse takes home $1.5M prize pool after a stunning 3-0 victory in the grand finals against NAVI.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="slider-btn" id="prevSlide"><i class="fas fa-chevron-left"></i></button>
+                <div class="slider-dots" id="sliderDots">
+                    <div class="dot active" data-slide="0"></div>
+                    <div class="dot" data-slide="1"></div>
+                    <div class="dot" data-slide="2"></div>
+                </div>
+                <button class="slider-btn" id="nextSlide"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Games Section -->
+    <section class="section" id="trending">
+        <div class="section-header">
+            <span class="section-label">TRENDING NOW</span>
+            <h2 class="section-title">Popular Games</h2>
+            <p class="section-subtitle">The hottest games everyone is playing right now</p>
+        </div>
+        <div class="trending-grid">
+            <div class="game-card fade-in">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" alt="Game 1">
+                <div class="game-rating">9.5</div>
+                <div class="game-card-overlay">
+                    <span class="game-card-tag">RPG</span>
+                    <h3 class="game-card-title">Elden Ring: Nightreign</h3>
+                    <div class="game-card-meta">
+                        <span><i class="fas fa-calendar"></i> Jun 2026</span>
+                        <span><i class="fas fa-users"></i> 2.5M Players</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-card fade-in">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=600&q=80" alt="Game 2">
+                <div class="game-rating">9.2</div>
+                <div class="game-card-overlay">
+                    <span class="game-card-tag">FPS</span>
+                    <h3 class="game-card-title">Counter-Strike 2</h3>
+                    <div class="game-card-meta">
+                        <span><i class="fas fa-calendar"></i> Sep 2023</span>
+                        <span><i class="fas fa-users"></i> 1.8M Players</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-card fade-in">
+                <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=600&q=80" alt="Game 3">
+                <div class="game-rating">8.8</div>
+                <div class="game-card-overlay">
+                    <span class="game-card-tag">ACTION</span>
+                    <h3 class="game-card-title">Black Myth: Wukong</h3>
+                    <div class="game-card-meta">
+                        <span><i class="fas fa-calendar"></i> Aug 2024</span>
+                        <span><i class="fas fa-users"></i> 3.2M Players</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News Section -->
+    <section class="section" id="news" style="background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);">
+        <div class="section-header">
+            <span class="section-label">LATEST UPDATES</span>
+            <h2 class="section-title">Gaming News</h2>
+            <p class="section-subtitle">Breaking news from the world of gaming</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card fade-in">
+                <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=600&q=80" alt="News 1" class="news-card-image">
+                <div class="news-card-content">
+                    <div class="news-card-tags">
+                        <span class="tag">Hardware</span>
+                        <span class="tag blue">Exclusive</span>
+                    </div>
+                    <h3 class="news-card-title">NVIDIA Unveils RTX 5090 with 32GB GDDR7 Memory</h3>
+                    <p class="news-card-desc">The next-generation flagship GPU promises 70% performance uplift over the RTX 4090, featuring revolutionary Blackwell architecture and advanced ray tracing capabilities.</p>
+                    <div class="news-card-footer">
+                        <span class="news-date"><i class="far fa-clock"></i> 2 hours ago</span>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="news-card fade-in">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=600&q=80" alt="News 2" class="news-card-image">
+                <div class="news-card-content">
+                    <div class="news-card-tags">
+                        <span class="tag">Esports</span>
+                        <span class="tag blue">Live</span>
+                    </div>
+                    <h3 class="news-card-title">CS2 Major 2026: Record-Breaking Viewership</h3>
+                    <p class="news-card-desc">The Copenhagen Major breaks all previous records with over 2.5 million concurrent viewers during the grand finals, cementing CS2's dominance in esports.</p>
+                    <div class="news-card-footer">
+                        <span class="news-date"><i class="far fa-clock"></i> 5 hours ago</span>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="news-card fade-in">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" alt="News 3" class="news-card-image">
+                <div class="news-card-content">
+                    <div class="news-card-tags">
+                        <span class="tag">Update</span>
+                        <span class="tag blue">Patch</span>
+                    </div>
+                    <h3 class="news-card-title">Cyberpunk 2077 Patch 2.2 Overhauls Ray Tracing</h3>
+                    <p class="news-card-desc">CD Projekt Red releases massive update introducing path tracing improvements, new vehicle combat mechanics, and expanded romance options for all characters.</p>
+                    <div class="news-card-footer">
+                        <span class="news-date"><i class="far fa-clock"></i> 8 hours ago</span>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="news-card fade-in">
+                <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=600&q=80" alt="News 4" class="news-card-image">
+                <div class="news-card-content">
+                    <div class="news-card-tags">
+                        <span class="tag">Rumor</span>
+                        <span class="tag blue">Leaked</span>
+                    </div>
+                    <h3 class="news-card-title">Half-Life 3 Development Confirmed by Valve Insider</h3>
+                    <p class="news-card-desc">After years of speculation, a reliable source confirms that Valve is actively developing Half-Life 3 with Source 2 engine, targeting a 2027 release window.</p>
+                    <div class="news-card-footer">
+                        <span class="news-date"><i class="far fa-clock"></i> 12 hours ago</span>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="news-card fade-in">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=600&q=80" alt="News 5" class="news-card-image">
+                <div class="news-card-content">
+                    <div class="news-card-tags">
+                        <span class="tag">Indie</span>
+                        <span class="tag blue">Award</span>
+                    </div>
+                    <h3 class="news-card-title">Indie Game of the Year: Hades II Sweeps Awards</h3>
+                    <p class="news-card-desc">Supergiant Games' roguelike sequel dominates the indie scene, winning Game of the Year at multiple ceremonies with its innovative gameplay and storytelling.</p>
+                    <div class="news-card-footer">
+                        <span class="news-date"><i class="far fa-clock"></i> 1 day ago</span>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="news-card fade-in">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&q=80" alt="News 6" class="news-card-image">
+                <div class="news-card-content">
+                    <div class="news-card-tags">
+                        <span class="tag">Console</span>
+                        <span class="tag blue">Rumor</span>
+                    </div>
+                    <h3 class="news-card-title">PlayStation 6 Prototype Details Surface Online</h3>
+                    <p class="news-card-desc">Leaked specifications suggest the PS6 will feature a custom AMD Zen 6 CPU and RDNA 5 GPU, with backward compatibility for all previous PlayStation generations.</p>
+                    <div class="news-card-footer">
+                        <span class="news-date"><i class="far fa-clock"></i> 1 day ago</span>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="section countdown-section" id="countdown">
+        <div class="countdown-container">
+            <span class="section-label">UPCOMING RELEASE</span>
+            <h2 class="countdown-game">GTA VI</h2>
+            <p class="countdown-release">Releasing October 24, 2026</p>
+            <div class="countdown-timer" id="countdownTimer">
+                <div class="countdown-item">
+                    <span class="countdown-value" id="days">142</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="hours">08</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="minutes">45</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-value" id="seconds">32</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section class="section" id="games">
+        <div class="section-header">
+            <span class="section-label">GAME LIBRARY</span>
+            <h2 class="section-title">All Games</h2>
+            <p class="section-subtitle">Discover the best PC games across all genres</p>
+        </div>
+        <div class="games-grid">
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">Elden Ring: Nightreign</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">RPG</span>
+                        <span class="game-date">Jun 2026</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></span>
+                        <span class="rating-score">9.5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">Black Myth: Wukong</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">Action</span>
+                        <span class="game-date">Aug 2024</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                        <span class="rating-score">9.2</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">Starfield: Shattered Space</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">RPG</span>
+                        <span class="game-date">Sep 2025</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></span>
+                        <span class="rating-score">8.5</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">Hades II</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">Roguelike</span>
+                        <span class="game-date">May 2025</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                        <span class="rating-score">9.8</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">S.T.A.L.K.E.R. 2</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">Survival</span>
+                        <span class="game-date">Nov 2024</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></span>
+                        <span class="rating-score">8.7</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">Civilization VII</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">Strategy</span>
+                        <span class="game-date">Feb 2026</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></span>
+                        <span class="rating-score">8.3</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">DOOM: The Dark Ages</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">FPS</span>
+                        <span class="game-date">May 2026</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></span>
+                        <span class="rating-score">9.0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="game-item fade-in">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=400&q=80" alt="Game" class="game-item-cover">
+                <div class="game-item-info">
+                    <h3 class="game-item-title">Frostpunk 2</h3>
+                    <div class="game-item-meta">
+                        <span class="game-genre">Strategy</span>
+                        <span class="game-date">Sep 2024</span>
+                    </div>
+                    <div class="game-rating-bar">
+                        <span class="rating-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                        <span class="rating-score">9.1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="section" id="reviews" style="background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);">
+        <div class="section-header">
+            <span class="section-label">CRITIC SCORES</span>
+            <h2 class="section-title">Game Reviews</h2>
+            <p class="section-subtitle">In-depth reviews from our expert team</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card fade-in">
+                <div class="review-header">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200&q=80" alt="Game" class="review-image">
+                    <div class="review-header-info">
+                        <h3 class="review-game-title">Elden Ring: Nightreign</h3>
+                        <div class="review-score-badge">9.5 / 10</div>
+                    </div>
+                </div>
+                <div class="review-body">
+                    <div class="review-pros-cons">
+                        <div class="pros">
+                            <h4><i class="fas fa-check-circle"></i> Pros</h4>
+                            <ul>
+                                <li><i class="fas fa-plus"></i> Massive open world</li>
+                                <li><i class="fas fa-plus"></i> Challenging combat</li>
+                                <li><i class="fas fa-plus"></i> Stunning visuals</li>
+                                <li><i class="fas fa-plus"></i> Deep lore</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4><i class="fas fa-times-circle"></i> Cons</h4>
+                            <ul>
+                                <li><i class="fas fa-minus"></i> Steep learning curve</li>
+                                <li><i class="fas fa-minus"></i> Occasional frame drops</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="review-summary">FromSoftware delivers another masterpiece with Elden Ring: Nightreign. The expansion builds upon the original's foundation with new areas, bosses, and mechanics that will challenge even veteran players. The visual fidelity on PC is breathtaking.</p>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-header">
+                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=200&q=80" alt="Game" class="review-image">
+                    <div class="review-header-info">
+                        <h3 class="review-game-title">Black Myth: Wukong</h3>
+                        <div class="review-score-badge">9.2 / 10</div>
+                    </div>
+                </div>
+                <div class="review-body">
+                    <div class="review-pros-cons">
+                        <div class="pros">
+                            <h4><i class="fas fa-check-circle"></i> Pros</h4>
+                            <ul>
+                                <li><i class="fas fa-plus"></i> Gorgeous graphics</li>
+                                <li><i class="fas fa-plus"></i> Unique setting</li>
+                                <li><i class="fas fa-plus"></i> Satisfying combat</li>
+                                <li><i class="fas fa-plus"></i> Epic boss fights</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4><i class="fas fa-times-circle"></i> Cons</h4>
+                            <ul>
+                                <li><i class="fas fa-minus"></i> Camera issues</li>
+                                <li><i class="fas fa-minus"></i> Some padding</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="review-summary">Game Science's debut AAA title is a stunning achievement. Black Myth: Wukong brings Chinese mythology to life with incredible detail and challenging Souls-like combat. A must-play for action RPG fans.</p>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-header">
+                    <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=200&q=80" alt="Game" class="review-image">
+                    <div class="review-header-info">
+                        <h3 class="review-game-title">Cyberpunk 2077</h3>
+                        <div class="review-score-badge">9.0 / 10</div>
+                    </div>
+                </div>
+                <div class="review-body">
+                    <div class="review-pros-cons">
+                        <div class="pros">
+                            <h4><i class="fas fa-check-circle"></i> Pros</h4>
+                            <ul>
+                                <li><i class="fas fa-plus"></i> Immersive world</li>
+                                <li><i class="fas fa-plus"></i> Great story</li>
+                                <li><i class="fas fa-plus"></i> Ray tracing</li>
+                                <li><i class="fas fa-plus"></i> Free updates</li>
+                            </ul>
+                        </div>
+                        <div class="cons">
+                            <h4><i class="fas fa-times-circle"></i> Cons</h4>
+                            <ul>
+                                <li><i class="fas fa-minus"></i> Launch issues</li>
+                                <li><i class="fas fa-minus"></i> Police AI</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="review-summary">After years of patches and updates, Cyberpunk 2077 has become the game it was meant to be. Night City is a breathtaking open world with a compelling narrative and stunning ray-traced visuals on high-end PCs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hardware Section -->
+    <section class="section" id="hardware">
+        <div class="section-header">
+            <span class="section-label">PC BUILDING</span>
+            <h2 class="section-title">Gaming Hardware</h2>
+            <p class="section-subtitle">Latest hardware news and recommendations</p>
+        </div>
+        <div class="hardware-grid">
+            <div class="hardware-card fade-in">
+                <div class="hardware-icon"><i class="fas fa-microchip"></i></div>
+                <h3>NVIDIA RTX 5090</h3>
+                <p>Next-gen flagship with 32GB GDDR7, Blackwell architecture, and 70% performance boost over RTX 4090.</p>
+                <div class="hardware-specs">
+                    <span class="spec"><i class="fas fa-memory"></i> 32GB GDDR7</span>
+                    <span class="spec"><i class="fas fa-bolt"></i> 600W TDP</span>
+                </div>
+            </div>
+            <div class="hardware-card fade-in">
+                <div class="hardware-icon"><i class="fas fa-server"></i></div>
+                <h3>Intel Core Ultra 9</h3>
+                <p>Arrow Lake flagship with 24 cores, advanced NPU for AI workloads, and DDR5-8000 support.</p>
+                <div class="hardware-specs">
+                    <span class="spec"><i class="fas fa-microchip"></i> 24 Cores</span>
+                    <span class="spec"><i class="fas fa-tachometer-alt"></i> 6.2 GHz</span>
+                </div>
+            </div>
+            <div class="hardware-card fade-in">
+                <div class="hardware-icon"><i class="fas fa-desktop"></i></div>
+                <h3>AMD RX 8900 XTX</h3>
+                <p>RDNA 4 flagship featuring unified ray tracing, AI accelerators, and massive performance gains.</p>
+                <div class="hardware-specs">
+                    <span class="spec"><i class="fas fa-memory"></i> 24GB GDDR6</span>
+                    <span class="spec"><i class="fas fa-bolt"></i> 450W TDP</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section class="section" id="leaderboard" style="background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);">
+        <div class="section-header">
+            <span class="section-label">TOP CHARTS</span>
+            <h2 class="section-title">Popular Games Leaderboard</h2>
+            <p class="section-subtitle">Most played games this month</p>
+        </div>
+        <div class="leaderboard fade-in">
+            <div class="leaderboard-header">
+                <h3><i class="fas fa-crown"></i> Most Played Games - June 2026</h3>
+            </div>
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank top">1</div>
+                <div class="leaderboard-game">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&q=80" alt="Game">
+                    <div class="leaderboard-game-info">
+                        <h4>Elden Ring: Nightreign</h4>
+                        <span>FromSoftware | RPG</span>
+                    </div>
+                </div>
+                <div class="leaderboard-players">3.2M</div>
+            </div>
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank top">2</div>
+                <div class="leaderboard-game">
+                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=100&q=80" alt="Game">
+                    <div class="leaderboard-game-info">
+                        <h4>Counter-Strike 2</h4>
+                        <span>Valve | FPS</span>
+                    </div>
+                </div>
+                <div class="leaderboard-players">2.8M</div>
+            </div>
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank top">3</div>
+                <div class="leaderboard-game">
+                    <img src="https://images.unsplash.com/photo-1593305841991-05c29736ce7a?w=100&q=80" alt="Game">
+                    <div class="leaderboard-game-info">
+                        <h4>Black Myth: Wukong</h4>
+                        <span>Game Science | Action</span>
+                    </div>
+                </div>
+                <div class="leaderboard-players">2.1M</div>
+            </div>
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">4</div>
+                <div class="leaderboard-game">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=100&q=80" alt="Game">
+                    <div class="leaderboard-game-info">
+                        <h4>Hades II</h4>
+                        <span>Supergiant | Roguelike</span>
+                    </div>
+                </div>
+                <div class="leaderboard-players">1.9M</div>
+            </div>
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">5</div>
+                <div class="leaderboard-game">
+                    <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b2b0a?w=100&q=80" alt="Game">
+                    <div class="leaderboard-game-info">
+                        <h4>Valorant</h4>
+                        <span>Riot Games | FPS</span>
+                    </div>
+                </div>
+                <div class="leaderboard-players">1.7M</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="section-header">
+            <span class="section-label">GET IN TOUCH</span>
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Have a tip or want to collaborate? Reach out!</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Let's Talk Gaming</h3>
+                <p>Whether you have a hot tip, want to submit a guest review, or just want to chat about the latest games, we are here for you. Our team responds within 24 hours.</p>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <span>contact@hansagaming.com</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <span>Los Angeles, California</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Response Time</h4>
+                            <span>Within 24 hours</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-link" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Tell us what's on your mind..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="section newsletter-section">
+        <div class="newsletter-container">
+            <h3>Join the HANSA Gaming Community</h3>
+            <p>Get weekly gaming news, exclusive reviews, and hardware updates delivered straight to your inbox. No spam, ever.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="#home" class="logo">
+                    <i class="fas fa-dragon"></i>
+                    HANSA <span>GAMING</span>
+                </a>
+                <p>Your ultimate destination for PC gaming news, reviews, and hardware updates. Stay ahead of the game with HANSA GAMING.</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="#news"><i class="fas fa-chevron-right"></i> News</a></li>
+                    <li><a href="#games"><i class="fas fa-chevron-right"></i> Games</a></li>
+                    <li><a href="#reviews"><i class="fas fa-chevron-right"></i> Reviews</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Categories</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Hardware</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Esports</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Indie Games</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> VR / AR</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Terms of Service</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Cookie Policy</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>2026 <span>HANSA GAMING</span>. All Rights Reserved. Built for gamers, by gamers.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').classList.add('hidden');
+            }, 2500);
+        });
+
+        // Particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.width = Math.random() * 4 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particlesContainer.appendChild(particle);
+        }
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+        });
+
+        mobileOverlay.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+        });
+
+        document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+            });
+        });
+
+        // Search Overlay
+        const searchBtn = document.getElementById('searchBtn');
+        const searchOverlay = document.getElementById('searchOverlay');
+        const searchClose = document.getElementById('searchClose');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        const searchData = [
+            { title: 'Elden Ring: Nightreign', desc: 'Latest FromSoftware RPG expansion', type: 'game', icon: 'fa-gamepad' },
+            { title: 'NVIDIA RTX 5090', desc: 'Next-gen GPU with 32GB GDDR7', type: 'hardware', icon: 'fa-microchip' },
+            { title: 'CS2 Major 2026', desc: 'Team Spirit wins championship', type: 'news', icon: 'fa-newspaper' },
+            { title: 'GTA VI Release Date', desc: 'October 24, 2026 confirmed', type: 'news', icon: 'fa-newspaper' },
+            { title: 'Black Myth: Wukong', desc: 'Chinese action RPG masterpiece', type: 'game', icon: 'fa-gamepad' },
+            { title: 'Cyberpunk 2077 Patch 2.2', desc: 'Ray tracing overhaul update', type: 'news', icon: 'fa-newspaper' },
+            { title: 'Hades II Review', desc: 'Roguelike sequel scores 9.8/10', type: 'review', icon: 'fa-star' },
+            { title: 'Intel Core Ultra 9', desc: 'Arrow Lake flagship processor', type: 'hardware', icon: 'fa-microchip' },
+            { title: 'DOOM: The Dark Ages', desc: 'Medieval FPS from id Software', type: 'game', icon: 'fa-gamepad' },
+            { title: 'Frostpunk 2', desc: 'Post-apocalyptic city builder', type: 'game', icon: 'fa-gamepad' }
+        ];
+
+        searchBtn.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            searchInput.focus();
+        });
+
+        searchClose.addEventListener('click', () => {
+            searchOverlay.classList.remove('active');
+            searchInput.value = '';
+            searchResults.innerHTML = '';
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            if (query.length < 2) {
+                searchResults.innerHTML = '';
+                return;
+            }
+            const filtered = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.desc.toLowerCase().includes(query)
+            );
+            searchResults.innerHTML = filtered.map(item => `
+                <div class="search-result-item">
+                    <i class="fas ${item.icon}"></i>
+                    <div>
+                        <h4>${item.title}</h4>
+                        <p>${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchOverlay.classList.remove('active');
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+            }
+        });
+
+        // News Slider
+        const sliderTrack = document.getElementById('sliderTrack');
+        const prevSlide = document.getElementById('prevSlide');
+        const nextSlide = document.getElementById('nextSlide');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+        const totalSlides = 3;
+        let autoSlideInterval;
+
+        function goToSlide(index) {
+            currentSlide = index;
+            sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function nextSlideFunc() {
+            goToSlide((currentSlide + 1) % totalSlides);
+        }
+
+        function prevSlideFunc() {
+            goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+        }
+
+        nextSlide.addEventListener('click', () => {
+            nextSlideFunc();
+            resetAutoSlide();
+        });
+
+        prevSlide.addEventListener('click', () => {
+            prevSlideFunc();
+            resetAutoSlide();
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                resetAutoSlide();
+            });
+        });
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlideFunc, 5000);
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+
+        startAutoSlide();
+
+        // Countdown Timer
+        function updateCountdown() {
+            const releaseDate = new Date('2026-10-24T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = releaseDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(3, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Fade In Animation on Scroll
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeElements.forEach(el => fadeObserver.observe(el));
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Contact Form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('.submit-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+            btn.style.background = 'linear-gradient(135deg, #00FF88, #00cc6a)';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+                e.target.reset();
+            }, 3000);
+        });
+
+        // Newsletter Form
+        document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Subscribed!';
+            btn.style.background = 'linear-gradient(135deg, #00FF88, #00cc6a)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+                e.target.reset();
+            }, 3000);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
